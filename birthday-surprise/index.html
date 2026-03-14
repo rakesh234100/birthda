@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Birthday, My Baby💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --rose: #e8607a;
+    --blush: #f2a7b4;
+    --cream: #fff8f4;
+    --gold: #c9a96e;
+    --deep: #2a1a1f;
+    --petal: #fce8ed;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html, body {
+    width:100%; min-height:100%;
+    background: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--deep);
+    overflow-x: hidden;
+  }
+
+  /* ── PETALS ── */
+  .petal-bg {
+    position: fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
+  }
+  .petal {
+    position:absolute; top:-60px;
+    width:18px; height:24px;
+    background: radial-gradient(ellipse at 40% 30%, #f9ccd6, #e8607a88);
+    border-radius: 50% 10% 50% 10%;
+    opacity:0.7;
+    animation: petalFall linear infinite;
+  }
+  @keyframes petalFall {
+    0%   { transform: translateY(-60px) rotate(0deg) translateX(0); opacity:.8; }
+    100% { transform: translateY(110vh) rotate(720deg) translateX(40px); opacity:0; }
+  }
+
+  /* ── STAGES ── */
+  .stage { display:none; }
+  .stage.active { display:flex; }
+
+  /* ── STAGE 0: PUZZLE LOCK ── */
+  #stage-0 {
+    min-height:100vh; flex-direction:column;
+    align-items:center; justify-content:center;
+    position:relative; z-index:1; padding:2rem;
+  }
+  #stage-0 .lock-wrap {
+    text-align:center;
+    background: linear-gradient(135deg, #fff0f3, #fff8f4);
+    border: 1.5px solid var(--blush);
+    border-radius: 2rem;
+    padding: 3.5rem 3rem;
+    box-shadow: 0 20px 60px #e8607a18, 0 4px 20px #e8607a10;
+    max-width:460px; width:100%;
+    animation: fadeUp .8s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(30px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .lock-icon { font-size:4rem; margin-bottom:1rem; animation: pulse 2s ease infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
+  #stage-0 h1 {
+    font-family:'Playfair Display', serif;
+    font-size:2rem; color:var(--rose);
+    margin-bottom:.5rem;
+  }
+  #stage-0 p { font-size:1.1rem; color:#7a4a52; margin-bottom:2rem; font-style:italic; }
+  .puzzle-hint {
+    background:#fff0f3; border-radius:1rem; padding:1rem 1.5rem;
+    font-size:1.05rem; color:#5a3040; margin-bottom:1.5rem;
+    border-left: 3px solid var(--rose);
+  }
+  .puzzle-hint strong { color:var(--rose); }
+  .puzzle-input {
+    display:flex; gap:.6rem; justify-content:center; margin-bottom:1rem;
+  }
+  .puzzle-input input {
+    width:3rem; height:3.2rem; text-align:center;
+    font-size:1.5rem; font-family:'Playfair Display', serif;
+    border: 2px solid var(--blush); border-radius:.7rem;
+    background:#fff; color:var(--deep);
+    outline:none; transition: border .2s;
+  }
+  .puzzle-input input:focus { border-color:var(--rose); }
+  .puzzle-btn {
+    background: linear-gradient(135deg, var(--rose), #d4405a);
+    color:#fff; border:none; border-radius:2rem;
+    padding:.8rem 2.5rem; font-size:1.05rem;
+    font-family:'Cormorant Garamond', serif;
+    cursor:pointer; transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 4px 16px #e8607a44;
+  }
+  .puzzle-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px #e8607a55; }
+  .puzzle-error { color:#c0394f; font-size:.95rem; margin-top:.7rem; min-height:1.2rem; }
+
+  /* ── STAGE 1: ANIMATED LOVE LETTER ── */
+  #stage-1 {
+    min-height:100vh; flex-direction:column;
+    align-items:center; justify-content:center;
+    position:relative; z-index:1; padding:2rem;
+  }
+  .letter-wrap {
+    max-width:600px; width:100%;
+    background: linear-gradient(160deg, #fffaf8, #fff3f5);
+    border:1.5px solid #f0c4cc;
+    border-radius:2rem; padding:3.5rem 3rem 3rem;
+    box-shadow: 0 24px 80px #e8607a14, 0 4px 20px #e8607a0e;
+    position:relative; overflow:hidden;
+  }
+  .letter-deco {
+    position:absolute; top:-30px; right:-30px;
+    font-size:8rem; opacity:.06; user-select:none;
+  }
+  .letter-greeting {
+    font-family:'Dancing Script', cursive;
+    font-size:2.2rem; color:var(--rose); margin-bottom:1.5rem;
+    transition: opacity 0.4s ease, transform 0.4s ease;  /* ── NAME SCROLL TRANSITION ── */
+  }
+  .letter-body {
+    font-size:1.15rem; line-height:1.9; color:#4a2830;
+    font-style:italic; min-height:180px;
+  }
+  .cursor {
+    display:inline-block; width:2px; height:1.1em;
+    background:var(--rose); vertical-align:middle;
+    animation: blink .7s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+  .letter-sig {
+    font-family:'Dancing Script', cursive;
+    font-size:1.8rem; color:var(--gold);
+    margin-top:2rem; text-align:right;
+    opacity:0; transition: opacity 1s;
+  }
+  .letter-sig.show { opacity:1; }
+  .stage-next-btn {
+    display:block; margin:2rem auto 0;
+    background: linear-gradient(135deg, var(--rose), #d4405a);
+    color:#fff; border:none; border-radius:2rem;
+    padding:.85rem 2.8rem; font-size:1.05rem;
+    font-family:'Cormorant Garamond', serif;
+    cursor:pointer; transition: transform .15s, opacity .3s;
+    box-shadow: 0 4px 16px #e8607a44;
+    opacity:0; pointer-events:none;
+  }
+  .stage-next-btn.show { opacity:1; pointer-events:all; }
+  .stage-next-btn:hover { transform:translateY(-2px); }
+
+  /* ── STAGE 2: MEMORY TIMELINE ── */
+  #stage-2 {
+    min-height:100vh; flex-direction:column;
+    align-items:center; padding:4rem 1.5rem;
+    position:relative; z-index:1;
+  }
+  #stage-2 h2 {
+    font-family:'Playfair Display', serif;
+    font-size:2.2rem; color:var(--rose);
+    text-align:center; margin-bottom:.5rem;
+  }
+  #stage-2 .sub {
+    text-align:center; font-style:italic; color:#7a4a52;
+    font-size:1.05rem; margin-bottom:3rem;
+  }
+  .timeline {
+    width:100%; max-width:560px; position:relative;
+  }
+  .timeline::before {
+    content:''; position:absolute; left:50%; top:0; bottom:0;
+    width:2px; background: linear-gradient(to bottom, transparent, var(--blush), transparent);
+    transform:translateX(-50%);
+  }
+  .t-item {
+    display:flex; margin-bottom:2.5rem;
+    opacity:0; transform:translateY(20px);
+    transition: opacity .6s, transform .6s;
+  }
+  .t-item.visible { opacity:1; transform:translateY(0); }
+  .t-item:nth-child(odd) { flex-direction:row; }
+  .t-item:nth-child(even) { flex-direction:row-reverse; }
+  .t-card {
+    width:calc(50% - 2rem);
+    background:#fff; border:1.5px solid #f0c4cc;
+    border-radius:1.2rem; padding:1.2rem 1.4rem;
+    box-shadow: 0 6px 24px #e8607a10;
+    position:relative;
+  }
+  .t-item:nth-child(odd) .t-card { margin-right:1rem; }
+  .t-item:nth-child(even) .t-card { margin-left:1rem; }
+  .t-dot {
+    width:1rem; height:1rem; border-radius:50%;
+    background:var(--rose); border:3px solid var(--cream);
+    position:absolute; top:1.2rem;
+    box-shadow:0 0 0 3px var(--blush);
+    flex-shrink:0; align-self:flex-start; margin-top:1.2rem;
+  }
+  .t-item:nth-child(odd) .t-dot  { right:-1.5rem; }
+  .t-item:nth-child(even) .t-dot { left:-1.5rem; }
+  .t-emoji { font-size:1.6rem; margin-bottom:.4rem; }
+  .t-date { font-size:.8rem; color:var(--gold); letter-spacing:.08em; text-transform:uppercase; }
+  .t-title { font-family:'Playfair Display', serif; font-size:1.05rem; color:var(--rose); margin:.2rem 0; }
+  .t-desc { font-size:.95rem; color:#5a3040; line-height:1.6; }
+
+  /* ── STAGE 3: REASONS I LOVE YOU ── */
+  #stage-3 {
+    min-height:100vh; flex-direction:column;
+    align-items:center; justify-content:center;
+    position:relative; z-index:1; padding:2rem;
+  }
+  .reasons-wrap {
+    max-width:480px; width:100%; text-align:center;
+  }
+  #stage-3 h2 {
+    font-family:'Playfair Display', serif;
+    font-size:2.2rem; color:var(--rose);
+    margin-bottom:.4rem;
+  }
+  #stage-3 .sub { font-style:italic; color:#7a4a52; margin-bottom:2.5rem; }
+  .reason-card {
+    background: linear-gradient(135deg, #fff0f3, #fffaf8);
+    border: 1.5px solid var(--blush);
+    border-radius:1.8rem; padding:2.5rem 2rem;
+    min-height:180px; display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 12px 40px #e8607a14;
+    margin-bottom:1.8rem; position:relative; overflow:hidden;
+  }
+  .reason-card::before {
+    content:'"'; font-family:'Playfair Display', serif;
+    font-size:8rem; color:var(--blush); opacity:.3;
+    position:absolute; top:-1.5rem; left:.5rem;
+    line-height:1; pointer-events:none;
+  }
+  .reason-text {
+    font-family:'Playfair Display', serif;
+    font-size:1.25rem; color:#4a2830;
+    font-style:italic; line-height:1.7; position:relative; z-index:1;
+    animation: fadeSwap .4s ease;
+  }
+  @keyframes fadeSwap {
+    from { opacity:0; transform:scale(.96); }
+    to   { opacity:1; transform:scale(1); }
+  }
+  .reason-count { color:var(--gold); font-size:.9rem; margin-bottom:.6rem; letter-spacing:.06em; }
+  .reasons-btn {
+    background: linear-gradient(135deg, var(--rose), #d4405a);
+    color:#fff; border:none; border-radius:2rem;
+    padding:.85rem 2.5rem; font-size:1.05rem;
+    font-family:'Cormorant Garamond', serif;
+    cursor:pointer; transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 4px 16px #e8607a44;
+  }
+  .reasons-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px #e8607a55; }
+  .heart-burst {
+    position:fixed; pointer-events:none; z-index:999;
+    font-size:1.6rem; animation: heartFloat 1.2s ease forwards;
+  }
+  @keyframes heartFloat {
+    0%   { opacity:1; transform:translateY(0) scale(1); }
+    100% { opacity:0; transform:translateY(-120px) scale(1.5); }
+  }
+
+  /* ── STAGE 4: FINAL BIRTHDAY ── */
+  #stage-4 {
+    min-height:100vh; flex-direction:column;
+    align-items:center; justify-content:center;
+    position:relative; z-index:1; padding:2rem;
+    text-align:center;
+  }
+  .final-wrap { max-width:540px; width:100%; }
+  .cake { font-size:5rem; animation: cakePop .6s cubic-bezier(.4,2,.6,1) both; margin-bottom:1rem; }
+  @keyframes cakePop {
+    0%  { transform:scale(0) rotate(-20deg); opacity:0; }
+    100%{ transform:scale(1) rotate(0deg);   opacity:1; }
+  }
+  .final-wrap h1 {
+    font-family:'Dancing Script', cursive;
+    font-size:3.2rem; color:var(--rose);
+    margin-bottom:.5rem; line-height:1.2;
+    animation: fadeUp .8s .2s ease both;
+  }
+  .final-wrap p {
+    font-size:1.15rem; font-style:italic; color:#5a3040;
+    line-height:1.8; margin-bottom:2rem;
+    animation: fadeUp .8s .4s ease both;
+  }
+  .confetti-btn {
+    background: linear-gradient(135deg, var(--gold), #e0a030);
+    color:#fff; border:none; border-radius:2rem;
+    padding:1rem 3rem; font-size:1.1rem;
+    font-family:'Cormorant Garamond', serif;
+    cursor:pointer; transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 4px 16px #c9a96e55;
+    animation: fadeUp .8s .6s ease both;
+  }
+  .confetti-btn:hover { transform:translateY(-3px); box-shadow:0 10px 28px #c9a96e55; }
+  .confetti-piece {
+    position:fixed; pointer-events:none; z-index:999;
+    width:10px; height:10px; border-radius:2px;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0%  { opacity:1; transform:translateY(-20px) rotate(0deg); }
+    100%{ opacity:0; transform:translateY(100vh) rotate(720deg); }
+  }
+
+  /* ── MUSIC PLAYER ── */
+  .music-btn {
+    position:fixed; top:1.2rem; right:1.2rem; z-index:200;
+    width:44px; height:44px; border-radius:50%;
+    background: linear-gradient(135deg, var(--rose), #d4405a);
+    border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.2rem;
+    box-shadow: 0 4px 16px #e8607a55;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .music-btn:hover { transform:scale(1.12); box-shadow:0 6px 22px #e8607a77; }
+  .music-btn.playing { animation: musicPulse 1.4s ease infinite; }
+  @keyframes musicPulse {
+    0%,100% { box-shadow: 0 4px 16px #e8607a55; }
+    50%      { box-shadow: 0 0 0 10px #e8607a22, 0 4px 20px #e8607a66; }
+  }
+  .music-note {
+    position:fixed; pointer-events:none; z-index:198;
+    font-size:1.1rem; animation: noteFloat 2s ease forwards;
+  }
+  @keyframes noteFloat {
+    0%   { opacity:1; transform:translateY(0) scale(1) rotate(-10deg); }
+    100% { opacity:0; transform:translateY(-80px) scale(1.4) rotate(20deg); }
+  }
+
+  /* ── CELEBRATE BUTTON UPGRADED ── */
+  .confetti-btn {
+    position:relative; overflow:visible;
+    background: linear-gradient(135deg, #ff6b8b, var(--rose), #d4405a, var(--gold));
+    background-size: 300% 300%;
+    color:#fff; border:none; border-radius:3rem;
+    padding:1.1rem 3.5rem; font-size:1.2rem;
+    font-family:'Dancing Script', cursive; font-weight:700;
+    cursor:pointer;
+    box-shadow: 0 0 0 0 #e8607a44, 0 8px 30px #e8607a66;
+    animation: fadeUp .8s .6s ease both, gradShift 3s ease infinite, celebPulse 2s ease infinite;
+    letter-spacing:.04em;
+  }
+  @keyframes gradShift {
+    0%,100% { background-position:0% 50%; }
+    50%      { background-position:100% 50%; }
+  }
+  @keyframes celebPulse {
+    0%,100% { box-shadow: 0 0 0 0 #e8607a33, 0 8px 30px #e8607a66; transform:scale(1); }
+    50%      { box-shadow: 0 0 0 14px #e8607a00, 0 12px 40px #e8607a88; transform:scale(1.04); }
+  }
+  .confetti-btn::before {
+    content:'🎉'; position:absolute; left:-1rem; top:50%;
+    transform:translateY(-50%); font-size:1.4rem;
+    animation: wiggleL 1s ease infinite;
+  }
+  .confetti-btn::after {
+    content:'🎊'; position:absolute; right:-1rem; top:50%;
+    transform:translateY(-50%); font-size:1.4rem;
+    animation: wiggleR 1s ease infinite;
+  }
+  @keyframes wiggleL {
+    0%,100%{transform:translateY(-50%) rotate(-10deg);}
+    50%{transform:translateY(-50%) rotate(10deg);}
+  }
+  @keyframes wiggleR {
+    0%,100%{transform:translateY(-50%) rotate(10deg);}
+    50%{transform:translateY(-50%) rotate(-10deg);}
+  }
+  .confetti-btn:hover {
+    transform:scale(1.08) translateY(-3px) !important;
+    box-shadow: 0 0 30px #e8607aaa, 0 16px 50px #e8607a88 !important;
+  }
+  .confetti-btn:active { transform:scale(.97) !important; }
+
+  /* ── FIREWORK ── */
+  .firework {
+    position:fixed; pointer-events:none; z-index:998;
+    width:6px; height:6px; border-radius:50%;
+    animation: fireworkBurst ease forwards;
+  }
+  @keyframes fireworkBurst {
+    0%   { opacity:1; transform:translate(0,0) scale(1); }
+    100% { opacity:0; transform:translate(var(--tx),var(--ty)) scale(.4); }
+  }
+
+  /* ── PROGRESS DOTS ── */
+  .progress-dots {
+    position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%);
+    display:flex; gap:.6rem; z-index:100;
+  }
+  .pdot {
+    width:8px; height:8px; border-radius:50%;
+    background:var(--blush); transition:background .3s, transform .3s;
+  }
+  .pdot.active { background:var(--rose); transform:scale(1.3); }
+</style>
+</head>
+<body>
+
+<!-- Music -->
+<audio id="bgMusic" loop>
+  <source src="song.mp3" type="audio/mpeg"/>
+</audio>
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Toggle Music">🎵</button>
+
+<!-- Falling petals -->
+<div class="petal-bg" id="petalBg"></div>
+
+<!-- Progress dots -->
+<div class="progress-dots" id="progressDots">
+  <div class="pdot active" data-i="0"></div>
+  <div class="pdot" data-i="1"></div>
+  <div class="pdot" data-i="2"></div>
+  <div class="pdot" data-i="3"></div>
+  <div class="pdot" data-i="4"></div>
+</div>
+
+<!-- ══ STAGE 0: PUZZLE ══ -->
+<div id="stage-0" class="stage active">
+  <div class="lock-wrap">
+    <div class="lock-icon">🔐</div>
+    <h1>A Secret Awaits You</h1>
+    <p>Solve the riddle to unlock your birthday surprise…</p>
+    <div class="puzzle-hint">
+      <strong>Riddle:</strong> I have the first letter of your name, the number of days i think for you in a year, the day our life jounary start(Jan), and the last digit of the year you were born. What am I?<br/>
+      <em style="font-size:.9rem;color:#9a6070;">(It Start With You And Also End With You)</em>
+    </div>
+    <div class="puzzle-input">
+      <input type="text" maxlength="1" id="p0" placeholder="K"/>
+      <input type="text" maxlength="3" id="p1" placeholder="365"/>
+      <input type="text" maxlength="2" id="p2" placeholder="02"/>
+      <input type="text" maxlength="1" id="p3" placeholder="?"/>
+    </div>
+    <button class="puzzle-btn" onclick="checkPuzzle()">Unlock 💖</button>
+    <div class="puzzle-error" id="puzzleError"></div>
+  </div>
+</div>
+
+<!-- ══ STAGE 1: ANIMATED LOVE LETTER ══ -->
+<div id="stage-1" class="stage">
+  <div class="letter-wrap">
+    <div class="letter-deco">💌</div>
+    <div class="letter-greeting" id="letterGreeting">My Dearest,</div>
+    <div class="letter-body" id="letterBody"><span class="cursor"></span></div>
+    <div class="letter-sig" id="letterSig">Forever yours 💕</div>
+  </div>
+  <button class="stage-next-btn" id="letterNextBtn" onclick="goTo(2)">Our Story →</button>
+</div>
+
+<!-- ══ STAGE 2: MEMORY TIMELINE ══ -->
+<div id="stage-2" class="stage">
+  <h2>Our Story So Far</h2>
+  <p class="sub">Every moment with you is a treasure</p>
+  <div class="timeline" id="timeline"></div>
+  <button class="stage-next-btn show" style="margin-top:1rem;" onclick="goTo(3)">Reasons I Love You →</button>
+</div>
+
+<!-- ══ STAGE 3: REASONS I LOVE YOU ══ -->
+<div id="stage-3" class="stage">
+  <div class="reasons-wrap">
+    <h2>Reasons I Love You</h2>
+    <p class="sub">Click the button to discover each one…</p>
+    <div class="reason-card">
+      <div>
+        <div class="reason-count" id="reasonCount">1 / 10</div>
+        <div class="reason-text" id="reasonText">You make every ordinary day feel extraordinary.</div>
+      </div>
+    </div>
+    <button class="reasons-btn" onclick="nextReason()">Next Reason 💕</button>
+    <br/><br/>
+    <button class="stage-next-btn show" style="display:inline-block;" onclick="goTo(4)">The Grand Finale 🎂</button>
+  </div>
+</div>
+
+<!-- ══ STAGE 4: FINAL BIRTHDAY ══ -->
+<div id="stage-4" class="stage">
+  <div class="final-wrap">
+    <div class="cake">🎂</div>
+    <h1>Happy Birthday,<br/>My Sreemati Garu🌹</h1>
+    <p>
+      On this special day, I want you to know that you are the best thing that has ever happened In My Life.
+      Every laugh, every hug, every Kiss, Every Cry,>>Every moment — I cherish them all.
+      Here's to you, to us, and to all the beautiful days Which are  Loading....😁😁
+      <br/><br/>
+      <em>I love you more than words and More Than I Feel🥺.</em>
+    </p>
+    <button class="confetti-btn" onclick="launchConfetti()">🎉 Celebrate! 🎉</button>
+  </div>
+</div>
+
+<script>
+// ── PETALS ──
+(function() {
+  const bg = document.getElementById('petalBg');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      animation-duration:${6+Math.random()*8}s;
+      animation-delay:${-Math.random()*10}s;
+      width:${12+Math.random()*14}px;
+      height:${16+Math.random()*18}px;
+      opacity:${0.4+Math.random()*0.5};
+    `;
+    bg.appendChild(p);
+  }
+})();
+
+// ── STAGE NAVIGATION ──
+let currentStage = 0;
+function goTo(n) {
+  document.getElementById('stage-'+currentStage).classList.remove('active');
+  currentStage = n;
+  document.getElementById('stage-'+n).classList.add('active');
+  document.querySelectorAll('.pdot').forEach(d => {
+    d.classList.toggle('active', +d.dataset.i === n);
+  });
+  window.scrollTo(0,0);
+  if (n === 1) startLetter();
+  if (n === 2) initTimeline();
+  if (n === 3) showReason(0);
+}
+
+// ── PUZZLE ──
+// 🔧 CHANGE THE ANSWER HERE ──────────────────────────────────────────
+const PUZZLE_ANSWER = ['K','365','02','5'];
+// ─────────────────────────────────────────────────────────────────────
+function checkPuzzle() {
+  const vals = ['p0','p1','p2','p3'].map(id => document.getElementById(id).value.trim().toUpperCase());
+  const correct = PUZZLE_ANSWER.map(v => v.toString().toUpperCase());
+  if (vals.every((v,i) => v === correct[i])) {
+    goTo(1);
+  } else {
+    const err = document.getElementById('puzzleError');
+    err.textContent = '✗ Not quite… think again, love!';
+    ['p0','p1','p2','p3'].forEach(id => {
+      const el = document.getElementById(id);
+      el.style.borderColor='#e8607a';
+      setTimeout(()=>el.style.borderColor='',1200);
+    });
+  }
+}
+['p0','p1','p2','p3'].forEach((id,i,arr) => {
+  document.getElementById(id).addEventListener('keydown', e => {
+    if (e.key==='Enter') checkPuzzle();
+    if (e.key==='ArrowRight' && i<arr.length-1) document.getElementById(arr[i+1]).focus();
+  });
+  document.getElementById(id).addEventListener('input', e => {
+    const el = e.target;
+    if (el.value.length >= el.maxLength && i < arr.length-1)
+      document.getElementById(arr[i+1]).focus();
+  });
+});
+
+// ── LOVE LETTER ──
+// 🔧 ADD YOUR 3 NAMES HERE ────────────────────────────────────────────
+const LETTER_NAMES = ["Name1", "Name2", "Name3"]; // ← Replace with her 3 names
+// ─────────────────────────────────────────────────────────────────────
+const LETTER_TEXT = `Today is your day — a day as bright and beautiful as you are<<<But Not beautiful as you are in my eyes>>>😁❤️✨.
+
+From the very first time I saw you, I Feel My Wife Is InFront Of Me to Search Here Husband 😁😁😁. Every single day I Feel You 🫶✨, I Want You 😘💋, I Need You 🥺❤️, I Miss You 😔💭, I Hug You 🫂💕, I Love You ❤️‍🔥 you fill my world with a warmth I never knew I was missing… every single day. ❤️✨
+You are my favorite person ❌ my Only Person🥺🫶, my safe place, and my greatest achievement 🏆. Being loved by you is the greatest gift I have ever received In my Life>>3🫂💕🫶.
+
+On your birthday, I want to give you the whole world — but My Whole World is You I Forgot😁🫶, here is a little piece of my heart, wrapped in all the words I sometimes forget to say.
+
+I love you. More than you know. More than I can ever fully express.
+Just One Thing I Promises To You >>I Love You In Every Lifetime, In Every Universe, In Every Reality.>>❤️🥺🫶`;
+
+let nameIndex = 0;
+let nameInterval = null;
+
+function startLetter() {
+  const greetingEl = document.getElementById('letterGreeting');
+
+  // Reset in case re-visited
+  nameIndex = 0;
+  if (nameInterval) clearInterval(nameInterval);
+  greetingEl.style.opacity = '1';
+  greetingEl.style.transform = 'translateY(0)';
+  greetingEl.textContent = LETTER_NAMES[0] + ',';
+
+  // Cycle names every 2.5s with fade+slide animation
+  nameInterval = setInterval(() => {
+    greetingEl.style.opacity = '0';
+    greetingEl.style.transform = 'translateY(-10px)';
+    setTimeout(() => {
+      nameIndex = (nameIndex + 1) % LETTER_NAMES.length;
+      greetingEl.textContent = LETTER_NAMES[nameIndex] + ',';
+      greetingEl.style.opacity = '1';
+      greetingEl.style.transform = 'translateY(0)';
+    }, 400);
+  }, 2500);
+
+  typeText(LETTER_TEXT, document.getElementById('letterBody'), 28, () => {
+    document.getElementById('letterSig').classList.add('show');
+    document.getElementById('letterNextBtn').classList.add('show');
+  });
+}
+
+function typeText(text, el, speed, done) {
+  el.innerHTML = '<span class="cursor"></span>';
+  let i = 0;
+  function tick() {
+    if (i < text.length) {
+      const c = text[i];
+      const cur = el.querySelector('.cursor');
+      const span = document.createElement('span');
+      span.textContent = c === '\n' ? '' : c;
+      if (c === '\n') { el.insertBefore(document.createElement('br'), cur); }
+      else { el.insertBefore(span, cur); }
+      i++;
+      setTimeout(tick, c === '.' || c === '!' || c === '?' ? speed*8 : c === ',' ? speed*4 : speed);
+    } else {
+      el.querySelector('.cursor')?.remove();
+      done && done();
+    }
+  }
+  tick();
+}
+
+// ── TIMELINE ──
+// 🔧 EDIT YOUR MEMORIES ───────────────────────────────────────────────
+const MEMORIES = [
+ { emoji:'✨', date:'Day One', title:'The First Hello', desc:'The moment I saw you, something shifted — the world got a little brighter.' },
+  { emoji:'☕', date:'Our First Date', title:'Coffee & Butterflies', desc:'I was so nervous, but your smile put every fear to rest.' },
+  { emoji:'🌧', date:'A Rainy Day', title:'Stuck Together', desc:'We got caught in the rain and laughed until our sides hurt.' },
+  { emoji:'🌟', date:'6 Months', title:'I Knew It Was You', desc:'Six months in, I was completely, hopelessly, joyfully in love.' },
+  { emoji:'🏝', date:'Our Trip', title:'Adventures Together', desc:'Every place is magical when you\'re by my side.' },
+  { emoji:'🎂', date:'Today', title:'Your Birthday!', desc:'Another year of you in my life — the best gift I could ever ask for.' },
+];
+// ─────────────────────────────────────────────────────────────────────
+
+function initTimeline() {
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = '';
+  MEMORIES.forEach((m, i) => {
+    const item = document.createElement('div');
+    item.className = 't-item';
+    item.innerHTML = `
+      <div class="t-card">
+        <div class="t-emoji">${m.emoji}</div>
+        <div class="t-date">${m.date}</div>
+        <div class="t-title">${m.title}</div>
+        <div class="t-desc">${m.desc}</div>
+      </div>
+      <div class="t-dot"></div>
+    `;
+    tl.appendChild(item);
+    setTimeout(()=>item.classList.add('visible'), 200+i*180);
+  });
+}
+
+// ── REASONS I LOVE YOU ──
+// 🔧 ADD YOUR OWN REASONS ─────────────────────────────────────────────
+const REASONS = [
+ "You make every ordinary day feel extraordinary.",
+  "Your laugh is the most beautiful sound in the world.",
+  "You are kind to everyone, always — it takes my breath away.",
+  "You challenge me to be a better person, just by being you.",
+  "Your hugs feel like home.",
+  "You find beauty in the smallest, most overlooked things.",
+  "You make me feel seen, truly seen, in a way no one else ever has.",
+  "You have the most wonderful, ridiculous sense of humour.",
+  "You carry so much strength, even when things are hard.",
+  "Loving you is the easiest and best thing I have ever done.",
+];
+// ─────────────────────────────────────────────────────────────────────
+
+let reasonIdx = 0;
+function showReason(i) {
+  reasonIdx = i;
+  const el = document.getElementById('reasonText');
+  el.style.animation='none'; el.offsetHeight; el.style.animation='';
+  el.textContent = REASONS[i];
+  document.getElementById('reasonCount').textContent = `${i+1} / ${REASONS.length}`;
+}
+function nextReason() {
+  spawnHearts();
+  showReason((reasonIdx + 1) % REASONS.length);
+}
+function spawnHearts() {
+  const emojis = ['💕','💖','💗','💓','💝','🌸'];
+  for (let i = 0; i < 5; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart-burst';
+    h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    h.style.left = (30+Math.random()*40)+'%';
+    h.style.bottom = '20%';
+    h.style.animationDelay = (Math.random()*.3)+'s';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 1400);
+  }
+}
+
+// ── MUSIC ──
+let musicPlaying = false;
+const bgMusic = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicBtn');
+bgMusic.volume = 0.35;
+
+function toggleMusic() {
+  if (musicPlaying) {
+    bgMusic.pause();
+    musicBtn.textContent = '🎵';
+    musicBtn.classList.remove('playing');
+  } else {
+    bgMusic.play().catch(()=>{});
+    musicBtn.textContent = '🎶';
+    musicBtn.classList.add('playing');
+    spawnNotes();
+  }
+  musicPlaying = !musicPlaying;
+}
+
+// Auto-play on first user interaction
+document.addEventListener('click', function autoPlay() {
+  if (!musicPlaying) {
+    bgMusic.play().then(()=>{
+      musicPlaying = true;
+      musicBtn.textContent = '🎶';
+      musicBtn.classList.add('playing');
+      spawnNotes();
+    }).catch(()=>{});
+  }
+  document.removeEventListener('click', autoPlay);
+}, { once: true });
+
+function spawnNotes() {
+  if (!musicPlaying) return;
+  const notes = ['♪','♫','♬','🎵','🎶'];
+  const n = document.createElement('div');
+  n.className = 'music-note';
+  n.textContent = notes[Math.floor(Math.random()*notes.length)];
+  const btn = musicBtn.getBoundingClientRect();
+  n.style.cssText = `
+    left:${btn.left + Math.random()*40 - 10}px;
+    top:${btn.top}px;
+    animation-duration:${1.5+Math.random()}s;
+    color:var(--blush);
+  `;
+  document.body.appendChild(n);
+  setTimeout(()=>n.remove(), 2200);
+  setTimeout(spawnNotes, 800 + Math.random()*600);
+}
+
+// ── CELEBRATE — CONFETTI + FIREWORKS ──
+function launchConfetti() {
+  // Confetti rain
+  const colors = ['#e8607a','#f2a7b4','#c9a96e','#f9ccd6','#fff0a0','#a0e0f0','#ffb3c6'];
+  for (let i = 0; i < 120; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = `
+      left:${Math.random()*100}vw;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${6+Math.random()*10}px;
+      height:${6+Math.random()*10}px;
+      border-radius:${Math.random()>.5?'50%':'2px'};
+      animation-duration:${1.5+Math.random()*2.5}s;
+      animation-delay:${Math.random()*.8}s;
+      top:0;
+    `;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 4000);
+  }
+
+  // Firework bursts
+  const fwColors = ['#e8607a','#ffd700','#ff8fa3','#a0e0f0','#fff0a0','#c9a96e','#ff6b8b'];
+  function burst(cx, cy) {
+    for (let i = 0; i < 28; i++) {
+      const angle = (i / 28) * Math.PI * 2;
+      const dist  = 60 + Math.random() * 80;
+      const fw = document.createElement('div');
+      fw.className = 'firework';
+      fw.style.cssText = `
+        left:${cx}px; top:${cy}px;
+        background:${fwColors[Math.floor(Math.random()*fwColors.length)]};
+        --tx:${Math.cos(angle)*dist}px;
+        --ty:${Math.sin(angle)*dist}px;
+        animation-duration:${0.7+Math.random()*.5}s;
+        width:${4+Math.random()*5}px; height:${4+Math.random()*5}px;
+      `;
+      document.body.appendChild(fw);
+      setTimeout(()=>fw.remove(), 1400);
+    }
+  }
+
+  // 5 staggered bursts across the screen
+  const spots = [
+    [window.innerWidth*.2, window.innerHeight*.3],
+    [window.innerWidth*.5, window.innerHeight*.2],
+    [window.innerWidth*.8, window.innerHeight*.3],
+    [window.innerWidth*.3, window.innerHeight*.6],
+    [window.innerWidth*.7, window.innerHeight*.55],
+  ];
+  spots.forEach(([x,y], idx) => setTimeout(()=>burst(x,y), idx*250));
+  // Extra heart emojis
+  const hearts = ['💖','💗','💕','🌹','✨','💝'];
+  for (let i=0;i<10;i++) {
+    setTimeout(()=>{
+      const h = document.createElement('div');
+      h.className = 'heart-burst';
+      h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+      h.style.cssText = `left:${10+Math.random()*80}%; bottom:${10+Math.random()*30}%; font-size:${1.5+Math.random()}rem;`;
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),1400);
+    }, i*120);
+  }
+}
+</script>
+</body>
+</html>
